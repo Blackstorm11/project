@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title> Calendar</title>
+	<style>
+		/* Styles for the calendar */
+		body{
+			position: relative;
+			padding:10px;
+		}
+		table {
+			border-collapse: collapse;
+			margin: auto;
+			
+			left:-20px;
+		}
+		th, td {
+			border: 1px solid black;
+			padding: 35px;
+			text-align: center;
+		}
+		th {
+			background-color: #ccc;
+			font-weight: bold;
+		}
+		td:hover {
+			background-color: #eee;
+			cursor: pointer;
+		}
+		.current-day {
+			background-color: #ccc;
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<h1>Calendar</h1>
+	<div id="calendar"></div>
+    
+	<script>
+		// Get the current date
+		var date = new Date();
+
+		// Month names array
+		var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+		// Create the calendar table
+		var calendar = '<table>';
+		calendar += '<tr><th colspan="7">' + monthNames[date.getMonth()] + ' ' + date.getFullYear() + '</th></tr>';
+		calendar += '<tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>';
+
+		// Get the first day of the month
+		var firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+
+		// Get the number of days in the month
+		var daysInMonth = new Date(date.getFullYear(), date.getMonth()+1, 0).getDate();
+
+		// Fill in the calendar
+		var day = 1;
+		for (var i = 0; i < 6; i++) {
+			calendar += '<tr>';
+			for (var j = 0; j < 7; j++) {
+				if (i === 0 && j < firstDay) {
+					calendar += '<td></td>';
+				} else if (day > daysInMonth) {
+					break;
+				} else {
+					calendar += '<td';
+					if (day === date.getDate()) {
+						calendar += ' class="current-day"';
+					}
+					calendar += '>' + day + '</td>';
+					day++;
+				}
+			}
+			calendar += '</tr>';
+		}
+
+		calendar += '</table>';
+
+		// Add the calendar to the page
+		document.getElementById('calendar').innerHTML = calendar;
+
+		// Add event listeners to each day
+		var days = document.getElementsByTagName('td');
+		for (var k = 0; k < days.length; k++) {
+			days[k].addEventListener('click', function() {
+				if (this.innerHTML !== '') {
+					alert('You clicked on ' + monthNames[date.getMonth()] + ' ' + this.innerHTML + ', ' + date.getFullYear());
+				}
+			});
+		}
+	</script>
+</body>
+</html>
